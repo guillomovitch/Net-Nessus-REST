@@ -147,6 +147,7 @@ sub set_scan_read_status {
     my $scan_id = delete $params{scan_id};
 
     my $result = $self->_put("/scans/$scan_id/status", %params);
+    return 1;
 }
 
 sub export_scan {
