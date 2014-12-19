@@ -147,6 +147,85 @@ sub set_scan_read_status {
     my $scan_id = delete $params{scan_id};
 
     my $result = $self->_put("/scans/$scan_id/status", %params);
+}
+
+sub export_scan {
+    my ($self, %params) = @_;
+
+    croak "missing scan_id parameter" unless $params{scan_id};
+    croak "missing format parameter" unless $params{format};
+    croak "invalid format parameter" unless $params{format} eq 'nessus' or
+                                            $params{format} eq 'html'   or
+                                            $params{format} eq 'pdf'    or
+                                            $params{format} eq 'csv'    or
+                                            $params{format} eq 'db';
+
+    my $scan_id = delete $params{scan_id};
+
+    my $result = $self->_post("/scans/$scan_id/export", %params);
+    return $result->{file};
+}
+
+sub get_scan_export_status {
+    my ($self, %params) = @_;
+
+    croak "missing scan_id parameter" unless $params{scan_id};
+    croak "missing file_id parameter" unless $params{file_id};
+
+    my $scan_id = delete $params{scan_id};
+    my $file_id = delete $params{file_id};
+
+    my $result = $self->_get("/scans/$scan_id/export/$file_id/status");
+    return $result->{status};
+}
+
+sub download_scan {
+    my ($self, %params) = @_;
+
+    croak "missing scan_id parameter" unless $params{scan_id};
+    croak "missing file_id parameter" unless $params{file_id};
+    croak "missing filename parameter" unless $params{filename};
+
+    my $scan_id = delete $params{scan_id};
+    my $file_id = delete $params{file_id};
+
+    my $response = $self->{agent}->get(
+        $self->{url} . "/scans/$scan_id/export/$file_id/download",
+        ':content_file' => $params{filename}
+    );
+
+    if ($response->is_success()) {
+        return 1;
+    } else {
+        croak "communication error: " . $response->message()
+    }
+}
+
+sub get_scan_host_details {
+    my ($self, %params) = @_;
+
+    croak "missing scan_id parameter" unless $params{scan_id};
+    croak "missing host_id parameter" unless $params{host_id};
+
+    my $scan_id = delete $params{scan_id};
+    my $host_id = delete $params{host_id};
+
+    my $result = $self->_get("/scans/$scan_id/hosts/$host_id", %params);
+    return $result;
+}
+
+sub get_scan_plugin_output {
+    my ($self, %params) = @_;
+
+    croak "missing scan_id parameter" unless $params{scan_id};
+    croak "missing host_id parameter" unless $params{host_id};
+    croak "missing plugin_id parameter" unless $params{plugin_id};
+
+    my $scan_id = delete $params{scan_id};
+    my $host_id = delete $params{host_id};
+    my $plugin_id = delete $params{plugin_id};
+
+    my $result = $self->_get("/scans/$scan_id/hosts/$host_id/plugins/$plugin_id", %params);
     return $result;
 }
 
@@ -174,6 +253,28 @@ sub get_template_id {
     return unless $template;
 
     return $template->{uuid};
+}
+
+sub get_scan_id {
+    my ($self, %params) = @_;
+
+    croak "missing name parameter" unless $params{name};
+
+    my $scan =
+        first { $_->{name} eq $params{name} }
+        $self->list_scans();
+    return unless $scan;
+
+    return $scan->{id};
+}
+
+sub get_scan_status {
+    my ($self, %params) = @_;
+
+    croak "missing scan_id parameter" unless $params{scan_id};
+
+    my $details = $self->get_scan_details(scan_id => $params{scan_id});
+    return $details->{info}->{status};
 }
 
 sub get_scan_history_id {
@@ -402,6 +503,18 @@ Deletes historical results from a scan.
 
 See L<https://your.nessus.server:8834/nessus6-api.html#/resources/scans/delete-history> for details.
 
+=head2 $nessus->download_scan(scan_id => $scan_id, file_id => $file_id, filename => $filename)
+
+Download an exported scan.
+
+See L<https://your.nessus.server:8834/nessus6-api.html#/resources/scans/download> for details.
+
+=head2 $nessus->export_scan(scan_id => $scan_id, format => $format)
+
+Export the given scan.
+
+See L<https://your.nessus.server:8834/nessus6-api.html#/resources/scans/export> for details.
+
 =head2 $nessus->launch_scan(scan_id => $scan_id)
 
 Launches a scan.
@@ -425,6 +538,32 @@ See L<https://your.nessus.server:8834/nessus6-api.html#/resources/scans/read-sta
 Returns details for the given scan.
 
 See L<https://your.nessus.server:8834/nessus6-api.html#/resources/scans/details> for details.
+
+=head2 $nessus->get_scan_host_details(scan_id => $scan_id, host_id => $host_id, [history_id => $history_id])
+
+Returns details for the given host.
+
+See L<https://your.nessus.server:8834/nessus6-api.html#/resources/scans/host-details> for details.
+
+=head2 $nessus->get_scan_export_status(scan_id => $scan_id, file_id => $file_id)
+
+Check the file status of an exported scan.
+
+See L<https://your.nessus.server:8834/nessus6-api.html#/resources/scans/export-status> for details.
+
+=head2 $nessus->get_scan_plugin_output(scan_id => $scan_id, host_id => $host_id, plugin_id => $plugin_id, [history_id => $history_id])
+
+Returns the output for a given plugin.
+
+See L<https://your.nessus.server:8834/nessus6-api.html#/resources/scans/plugin-output> for details.
+
+=head2 $nessus->get_scan_id(name => $name)
+
+Returns the identifier for the scan with given name.
+
+=head2 $nessus->get_scan_status(scan_id => $scan_id)
+
+Returns the status for given scan.
 
 =head2 $nessus->get_scan_history_id(scan_id => $scan_id, scan_uuid => $scan_uuid)
 
