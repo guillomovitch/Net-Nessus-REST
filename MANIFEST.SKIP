@@ -1,0 +1,15 @@
+.git
+^.gitignore$
+
+^blib
+^Makefile(\.old)?$
+^MANIFEST\.
+^MYMETA\.
+^pm_to_blib$
+
+~$
+\.bak$
+\.old$
+\.swp
+
+^Net-Nessus-REST.*
