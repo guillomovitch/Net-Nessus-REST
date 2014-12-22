@@ -11,5 +11,15 @@ WriteMakefile(
     },
     TEST_REQUIRES  => {
         'Test::More' => 0,
+    },
+    META_MERGE => {
+        'meta-spec' => { version => 2 },
+        'resources' => {
+            repository => {
+                type => 'git',
+                url  => 'git://github.com/guillomovitch/Net-Nessus-REST',
+                web  => 'https://github.com/guillomovitch/Net-Nessus-REST'
+            },
+        }
     }
 );
