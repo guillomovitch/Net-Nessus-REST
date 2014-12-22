@@ -434,6 +434,35 @@ using REST interface.
         password => 's3cr3t',
     );
 
+    my $policy_template_id = $nessus->get_template_id(
+        name => 'basic',
+        type => 'policy'
+    );
+
+    my $scan = $nessus->create_scan(
+        uuid     => $policy_template_id,
+        settings => {
+            text_targets => '127.0.0.1',
+            name         => 'localhost scan'
+        }
+    );
+
+    $nessus->launch_scan(scan_id => $scan->{id});
+    while ($nessus->get_scan_status(scan_id => $scan->{id} ne 'completed')) {
+        sleep 10;
+    }
+
+    my $file_id = $nessus->export_scan(
+        scan_id => $scan_id,
+        format  => 'pdf'
+    );
+
+    $nessus->download_report(
+        scan_id  => $scan_id,
+        file_id  => $file_id,
+        filename => 'localhost.pdf'
+    );
+
 =head1 CLASS METHODS
 
 =head2 Net::Nessus::REST->new(url => $url, [ssl_opts => $opts, timeout => $timeout])
