@@ -284,7 +284,7 @@ sub get_scan_history_id {
     croak "missing scan_id parameter" unless $params{scan_id};
     croak "missing scan_uuid parameter" unless $params{scan_uuid};
 
-    my $details = $self->details_scan(scan_id => $params{scan_id});
+    my $details = $self->get_scan_details(scan_id => $params{scan_id});
     my $history =
         first { $_->{uuid} eq $params{scan_uuid} }
         @{$details->{history}};
