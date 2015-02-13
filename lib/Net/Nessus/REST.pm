@@ -317,6 +317,33 @@ sub get_folder_id {
     return $folder->{id};
 }
 
+sub list_plugin_families {
+    my ($self) = @_;
+
+    my $result  = $self->_get("/plugins/families");
+    return $result ? @{$result} : ();
+}
+
+sub get_plugin_family_details {
+    my ($self, %params) = @_;
+
+    croak "missing id parameter" unless $params{id};
+
+    my $family_id = delete $params{id};
+    my $result = $self->_get("/plugins/families/$family_id", %params);
+    return $result;
+}
+
+sub get_plugin_details {
+    my ($self, %params) = @_;
+
+    croak "missing id parameter" unless $params{id};
+
+    my $plugin_id = delete $params{id};
+    my $result = $self->_get("/plugins/plugin/$plugin_id", %params);
+    return $result;
+}
+
 sub _get {
     my ($self, $path, %params) = @_;
 
