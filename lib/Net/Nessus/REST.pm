@@ -636,6 +636,24 @@ See L<https://your.nessus.server:8834/nessus6-api.html#/resources/editor/list> f
 
 Returns the identifier for template with given name.
 
+=head2 $nessus->get_plugin_details( plugin_id => $plugin_id )
+
+returns the details of a plugin
+
+See L<https://your.nessus.server:8834/nessus6-api.html#/resources/plugins/plugin-details> for details.
+
+=head2 $nessus->list_plugin_families( )
+
+returns a list of plugin families
+
+See L<https://your.nessus.server:8834/nessus6-api.html#/resources/plugins/families> for details.
+
+=head2 $nessus->get_plugin_family_details( )
+
+returns the details about a plugin family
+
+See L<https://your.nessus.server:8834/nessus6-api.html#/resources/plugins/family-details> for details.
+
 =head1 LICENSE
 
 This program is free software: you can redistribute it and/or modify
