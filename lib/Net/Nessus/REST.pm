@@ -296,7 +296,11 @@ sub list_scanners {
     my ($self) = @_;
 
     my $result = $self->_get("/scanners");
-    return $result->{scanner} ? @{$result->{scanner}} : ();
+    # I think that this may have changed in the Nessus API, because an array ref is returned
+    # the elements of that array being hash refs
+    # return $result->{scanner} ? @{$result->{scanner}} : ();
+    $result = [] unless ($result);
+    return wantarray ? @{$result} : $result;
 }
 
 sub list_folders {
