@@ -306,12 +306,10 @@ sub list_scanners {
     my ($self) = @_;
 
     my $result = $self->_get("/scanners");
-    # I think that this may have changed in the Nessus API
-    # now you get an array ref back with a list of hashes
+    # I think that this may have changed in the Nessus API, because an array ref is returned
+    # the elements of that array being hash refs
     # return $result->{scanner} ? @{$result->{scanner}} : ();
-    unless ( $result ) {
-        $result     = [];
-    }
+    $result = [] unless ($result);
     return wantarray ? @{$result} : $result;
 }
 
