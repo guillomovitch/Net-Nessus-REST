@@ -112,7 +112,7 @@ sub list_scans {
     my ($self, %params) = @_;
 
     my $result = $self->_get('/scans', %params);
-    return $result->{scans} ? @{$result->{scans}} : ();
+    return $result ? @{$result} : ();
 }
 
 sub launch_scan {
