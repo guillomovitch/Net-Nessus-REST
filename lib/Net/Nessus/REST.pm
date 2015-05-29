@@ -296,7 +296,7 @@ sub list_scanners {
     my ($self) = @_;
 
     my $result = $self->_get("/scanners");
-    return $result->{scanner} ? @{$result->{scanner}} : ();
+    return $result ? @{$result} : ();
 }
 
 sub list_folders {
@@ -342,6 +342,17 @@ sub get_plugin_details {
     my $plugin_id = delete $params{id};
     my $result = $self->_get("/plugins/plugin/$plugin_id", %params);
     return $result;
+}
+
+sub get_scanner_id {
+    my ($self, %params) = @_;
+
+    croak "missing name parameter" unless $params{name};
+
+    my $scanner = first { $_->{name} eq $params{name}} $self->list_scanners();
+    return unless $scanner;
+
+    return $scanner->{id};
 }
 
 sub _get {
