@@ -136,6 +136,16 @@ sub get_scan_details {
     return $result;
 }
 
+sub stop_scan {
+    my ($self, %params) = @_;
+
+    croak "missing scan_id parameter" unless $params{scan_id};
+
+    my $scan_id = delete $params{scan_id};
+    my $result  = $self->_get("/scans/$scan_id/stop", %params);
+    return $result;
+}
+
 sub set_scan_read_status {
     my ($self, %params) = @_;
 
@@ -296,7 +306,11 @@ sub list_scanners {
     my ($self) = @_;
 
     my $result = $self->_get("/scanners");
-    return $result->{scanner} ? @{$result->{scanner}} : ();
+    # I think that this may have changed in the Nessus API, because an array ref is returned
+    # the elements of that array being hash refs
+    # return $result->{scanner} ? @{$result->{scanner}} : ();
+    $result = [] unless ($result);
+    return wantarray ? @{$result} : $result;
 }
 
 sub list_folders {
@@ -653,6 +667,12 @@ See L<https://your.nessus.server:8834/nessus6-api.html#/resources/plugins/famili
 returns the details about a plugin family
 
 See L<https://your.nessus.server:8834/nessus6-api.html#/resources/plugins/family-details> for details.
+
+=head2 $nessus->stop_scan(scan_id => $scan_id )
+
+Returns details for the given scan.
+
+See L<https://your.nessus.server:8834/nessus6-api.html#/resources/scans/stop> for details.
 
 =head1 LICENSE
 
