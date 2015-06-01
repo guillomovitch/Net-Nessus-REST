@@ -185,18 +185,16 @@ sub download_scan {
 
     croak "missing scan_id parameter" unless $params{scan_id};
     croak "missing file_id parameter" unless $params{file_id};
-    croak "missing filename parameter" unless $params{filename};
 
     my $scan_id = delete $params{scan_id};
     my $file_id = delete $params{file_id};
 
     my $response = $self->{agent}->get(
         $self->{url} . "/scans/$scan_id/export/$file_id/download",
-        ':content_file' => $params{filename}
     );
 
     if ($response->is_success()) {
-        return 1;
+        return $response->content;
     } else {
         croak "communication error: " . $response->message()
     }
