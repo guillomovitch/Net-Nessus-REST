@@ -185,18 +185,21 @@ sub download_scan {
 
     croak "missing scan_id parameter" unless $params{scan_id};
     croak "missing file_id parameter" unless $params{file_id};
-    croak "missing filename parameter" unless $params{filename};
 
     my $scan_id = delete $params{scan_id};
     my $file_id = delete $params{file_id};
 
     my $response = $self->{agent}->get(
         $self->{url} . "/scans/$scan_id/export/$file_id/download",
-        ':content_file' => $params{filename}
+        ( defined($params{filename}) ? "':content_file' => $params{filename}" : "")
     );
 
     if ($response->is_success()) {
-        return 1;
+        if (defined($params{filename})) {
+            return 1;
+        } else {
+            return $response->content;
+        }
     } else {
         croak "communication error: " . $response->message()
     }
@@ -296,7 +299,7 @@ sub list_scanners {
     my ($self) = @_;
 
     my $result = $self->_get("/scanners");
-    return $result->{scanner} ? @{$result->{scanner}} : ();
+    return $result ? @{$result} : ();
 }
 
 sub list_folders {
@@ -342,6 +345,17 @@ sub get_plugin_details {
     my $plugin_id = delete $params{id};
     my $result = $self->_get("/plugins/plugin/$plugin_id", %params);
     return $result;
+}
+
+sub get_scanner_id {
+    my ($self, %params) = @_;
+
+    croak "missing name parameter" unless $params{name};
+
+    my $scanner = first { $_->{name} eq $params{name}} $self->list_scanners();
+    return unless $scanner;
+
+    return $scanner->{id};
 }
 
 sub _get {
@@ -563,6 +577,7 @@ See L<https://your.nessus.server:8834/nessus6-api.html#/resources/scans/delete-h
 =head2 $nessus->download_scan(scan_id => $scan_id, file_id => $file_id, filename => $filename)
 
 Download an exported scan.
+Without filename parameter it will return the content of the file
 
 See L<https://your.nessus.server:8834/nessus6-api.html#/resources/scans/download> for details.
 
@@ -653,6 +668,10 @@ See L<https://your.nessus.server:8834/nessus6-api.html#/resources/plugins/famili
 returns the details about a plugin family
 
 See L<https://your.nessus.server:8834/nessus6-api.html#/resources/plugins/family-details> for details.
+
+=head2 $nessus->get_scanner_id( name => $name )
+
+returns the identifier for the scanner with given name.
 
 =head1 LICENSE
 
