@@ -191,10 +191,15 @@ sub download_scan {
 
     my $response = $self->{agent}->get(
         $self->{url} . "/scans/$scan_id/export/$file_id/download",
+        ( defined($params{filename}) ? "':content_file' => $params{filename}" : "")
     );
 
     if ($response->is_success()) {
-        return $response->content;
+        if (defined($params{filename})) {
+            return 1;
+        } else {
+            return $response->content;
+        }
     } else {
         croak "communication error: " . $response->message()
     }
@@ -572,6 +577,7 @@ See L<https://your.nessus.server:8834/nessus6-api.html#/resources/scans/delete-h
 =head2 $nessus->download_scan(scan_id => $scan_id, file_id => $file_id, filename => $filename)
 
 Download an exported scan.
+Without filename parameter it will return the content of the file
 
 See L<https://your.nessus.server:8834/nessus6-api.html#/resources/scans/download> for details.
 
@@ -662,6 +668,10 @@ See L<https://your.nessus.server:8834/nessus6-api.html#/resources/plugins/famili
 returns the details about a plugin family
 
 See L<https://your.nessus.server:8834/nessus6-api.html#/resources/plugins/family-details> for details.
+
+=head2 $nessus->get_scanner_id( name => $name )
+
+returns the identifier for the scanner with given name.
 
 =head1 LICENSE
 
