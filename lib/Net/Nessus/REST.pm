@@ -344,6 +344,17 @@ sub get_plugin_details {
     return $result;
 }
 
+sub get_scanner_id {
+    my ($self, %params) = @_;
+
+    croak "missing name parameter" unless $params{name};
+
+    my $scanner = first { $_->{name} eq $params{name}} $self->list_scanners();
+    return unless $scanner;
+
+    return $scanner->{id};
+}
+
 sub _get {
     my ($self, $path, %params) = @_;
 
@@ -653,6 +664,10 @@ See L<https://your.nessus.server:8834/nessus6-api.html#/resources/plugins/famili
 returns the details about a plugin family
 
 See L<https://your.nessus.server:8834/nessus6-api.html#/resources/plugins/family-details> for details.
+
+=head2 $nessus->get_scanner_id( name => $name )
+
+returns the identifier for the scanner with given name.
 
 =head1 LICENSE
 
