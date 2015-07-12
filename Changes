@@ -1,5 +1,10 @@
 Revision history for Net::Nessus::REST
 
+0.4 Sun, 12 Jul 2015
+* fix breakage in download_scan() method,
+  introduced by my fault in previous release
+* fix a few documentation issues in synopsis
+
 0.3 Mon, 06 Jul 2015
 * added scanner ID query functionality (Fabrice Durand)
 * allow to return report content as a string instead of a file (Fabrice Durand)
