@@ -494,6 +494,10 @@ using REST interface.
         format  => 'pdf'
     );
 
+    while ($nessus->get_scan_export_status(scan_id => $scan_id, file_id => $file_id) ne 'ready') {
+        sleep 1;
+    }
+
     $nessus->download_report(
         scan_id  => $scan->{id},
         file_id  => $file_id,
