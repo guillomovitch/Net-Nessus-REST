@@ -485,17 +485,17 @@ using REST interface.
     );
 
     $nessus->launch_scan(scan_id => $scan->{id});
-    while ($nessus->get_scan_status(scan_id => $scan->{id} ne 'completed')) {
+    while ($nessus->get_scan_status(scan_id => $scan->{id}) ne 'completed') {
         sleep 10;
     }
 
     my $file_id = $nessus->export_scan(
-        scan_id => $scan_id,
+        scan_id => $scan->{id},
         format  => 'pdf'
     );
 
     $nessus->download_report(
-        scan_id  => $scan_id,
+        scan_id  => $scan->{id},
         file_id  => $file_id,
         filename => 'localhost.pdf'
     );
