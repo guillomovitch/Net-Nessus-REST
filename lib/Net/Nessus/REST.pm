@@ -191,7 +191,7 @@ sub download_scan {
 
     my $response = $self->{agent}->get(
         $self->{url} . "/scans/$scan_id/export/$file_id/download",
-        ($params{filename} ? ":content_file => $params{filename}" : "")
+        $params{filename} ? (':content_file' => $params{filename}) : ()
     );
 
     if ($response->is_success()) {
