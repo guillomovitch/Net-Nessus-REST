@@ -498,7 +498,7 @@ using REST interface.
         sleep 1;
     }
 
-    $nessus->download_report(
+    $nessus->download_scan(
         scan_id  => $scan->{id},
         file_id  => $file_id,
         filename => 'localhost.pdf'
