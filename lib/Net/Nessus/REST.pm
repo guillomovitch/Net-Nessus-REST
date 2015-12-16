@@ -320,7 +320,7 @@ sub list_plugin_families {
     my ($self) = @_;
 
     my $result  = $self->_get("/plugins/families");
-    return $result ? @{$result} : ();
+    return $result->{families} ? @{$result->{families}} : ();
 }
 
 sub get_plugin_family_details {
