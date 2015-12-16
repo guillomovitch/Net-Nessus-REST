@@ -651,7 +651,7 @@ See L<https://your.nessus.server:8834/nessus6-api.html#/resources/editor/list> f
 
 Returns the identifier for template with given name.
 
-=head2 $nessus->get_plugin_details( plugin_id => $plugin_id )
+=head2 $nessus->get_plugin_details( id => $plugin_id )
 
 returns the details of a plugin
 
