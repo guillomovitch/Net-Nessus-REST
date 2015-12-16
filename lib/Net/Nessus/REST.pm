@@ -663,7 +663,7 @@ returns a list of plugin families
 
 See L<https://your.nessus.server:8834/nessus6-api.html#/resources/plugins/families> for details.
 
-=head2 $nessus->get_plugin_family_details( )
+=head2 $nessus->get_plugin_family_details( id => $family_id )
 
 returns the details about a plugin family
 
