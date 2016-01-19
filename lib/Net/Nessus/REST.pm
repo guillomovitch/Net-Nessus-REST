@@ -61,6 +61,67 @@ sub get_policy_id {
     return $policy->{id};
 }
 
+#Bithex 
+sub import_policy {
+    my ($self, %params) = @_;
+
+    croak "missing file name parameter" unless $params{file};
+
+    my $result = $self->_post("/policies/import", %params);
+    return $result;
+}
+
+#Bithex 
+sub get_policy_details {
+    my ($self, %params) = @_;
+
+    croak "missing id parameter" unless $params{id};
+
+	my $policy_id = delete $params{id};
+
+    my $result = $self->_get("/policies/$policy_id");
+    return $result;
+}
+
+#Bithex 
+sub delete_policy {
+    my ($self, %params) = @_;
+
+    croak "missing Policy id parameter" unless $params{id};
+
+	my $policy_id = delete $params{id};
+    my $result = $self->_delete("/policies/$policy_id");
+
+    return $result;
+}
+
+#Bithex 
+sub configure_policy {
+    my ($self, %params) = @_;
+
+    croak "missing id parameter" unless $params{id};
+    croak "missing uuid parameter" unless $params{uuid};
+    croak "missing settings parameter" unless $params{settings};
+
+	my $policy_id = delete $params{id};
+    my $result = $self->_put("/policies/$policy_id", %params);
+
+    return $result;
+}
+
+#Bithex 
+sub create_policy {
+    my ($self, %params) = @_;
+
+    croak "missing uuid parameter" unless $params{uuid};
+    croak "missing settings parameter" unless $params{settings};
+
+	my $uuid = delete $params{uuid};
+    my $result = $self->_post("/policies", %params);
+
+    return $result;
+}
+
 sub create_scan {
     my ($self, %params) = @_;
 
@@ -320,7 +381,7 @@ sub list_plugin_families {
     my ($self) = @_;
 
     my $result  = $self->_get("/plugins/families");
-    return $result->{families} ? @{$result->{families}} : ();
+    return $result;
 }
 
 sub get_plugin_family_details {
@@ -352,6 +413,18 @@ sub get_scanner_id {
     return unless $scanner;
 
     return $scanner->{id};
+}
+
+#Bithex
+sub file_upload {
+    my ($self, %params) = @_;
+
+    croak "missing file name" unless $params{file};
+
+	my $file = delete $params{file};
+
+	my $result = $self->_post_file('/file/upload', $file);
+	return $result;
 }
 
 sub _get {
@@ -402,6 +475,31 @@ sub _post {
         $self->{url} . $path,
         'Content-Type' => 'application/json',
         'Content'      => $content
+    );
+
+    my $result = eval { from_json($response->content()) };
+
+    if ($response->is_success()) {
+        return $result;
+    } else {
+        if ($result) {
+            croak "server error: " . $result->{error};
+        } else {
+            croak "communication error: " . $response->message()
+        }
+    }
+}
+
+#Bithex
+sub _post_file {
+    my ($self, $path, $file) = @_;
+
+    my $response = $self->{agent}->post(
+        $self->{url} . $path,
+        'Content-Type' => 'multipart/form-data',
+        'Content'      => [
+			Filedata => [$file]
+		]
     );
 
     my $result = eval { from_json($response->content()) };
@@ -534,6 +632,30 @@ See L<https://your.nessus.server:8834/nessus6-api.html#/resources/policies/list>
 
 Returns the identifier for the policy with given name.
 
+=head2 $nessus->get_policy_details(id => $policy_id)
+
+Returns a reference to a hash with all settings and parameters for a given scan policy.
+
+See L<https://your.nessus.server:8834/api#/resources/policies/details> for details.
+
+=head2 $nessus->import_policy(file => $fileuploaded)
+
+Returns reference to hash with name and identifier of the policy imported.
+NB $fileuploaded must be a valid identifier to a file uploaded to the Nessus server,
+e.g. with method file_upload()
+
+Example:
+$result = $nessus->import_policy(file => $fileuploaded);
+print "Policy imported: " . $result->{'name'} . "\n";
+
+See L<https://your.nessus.server:8834/api#/resources/file/upload> for details.
+
+=head2 $nessus->delete_policy(id => $policy_id)
+
+Deletes a given scan policy off the Nessus server
+
+See L<https://your.nessus.server:8834/api#/resources/policies/delete> for details.
+
 =head2 $nessus->list_scanners()
 
 Returns the scanner list.
@@ -663,7 +785,7 @@ returns a list of plugin families
 
 See L<https://your.nessus.server:8834/nessus6-api.html#/resources/plugins/families> for details.
 
-=head2 $nessus->get_plugin_family_details( id => $family_id )
+=head2 $nessus->get_plugin_family_details( )
 
 returns the details about a plugin family
 
@@ -672,6 +794,17 @@ See L<https://your.nessus.server:8834/nessus6-api.html#/resources/plugins/family
 =head2 $nessus->get_scanner_id( name => $name )
 
 returns the identifier for the scanner with given name.
+
+=head2 $nessus->file_upload(file => $file)
+
+Uploads a file to the Nessus server.
+Returns a reference to hash with identifier to the uploaded file.
+
+Example:
+my $result = $nessus->file_upload(file => $file);
+my $fileuploaded = $result->{'fileuploaded'};
+
+See L<https://your.nessus.server:8834/api#/resources/file/upload> for details.
 
 =head1 LICENSE
 
