@@ -412,6 +412,17 @@ sub get_scanner_id {
     return $scanner->{id};
 }
 
+sub file_upload {
+    my ($self, %params) = @_;
+
+    croak "missing file name" unless $params{file};
+
+	my $file = delete $params{file};
+
+	my $result = $self->_post_file('/file/upload', $file);
+	return $result;
+}
+
 sub _get {
     my ($self, $path, %params) = @_;
 
