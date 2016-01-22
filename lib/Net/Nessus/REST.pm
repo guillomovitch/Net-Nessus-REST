@@ -70,6 +70,17 @@ sub import_policy {
     return $result;
 }
 
+sub get_policy_details {
+    my ($self, %params) = @_;
+
+    croak "missing id parameter" unless $params{id};
+
+	my $policy_id = delete $params{id};
+
+    my $result = $self->_get("/policies/$policy_id");
+    return $result;
+}
+
 sub create_scan {
     my ($self, %params) = @_;
 
