@@ -92,6 +92,20 @@ sub delete_policy {
     return $result;
 }
 
+# Experimental
+sub configure_policy {
+    my ($self, %params) = @_;
+
+    croak "missing id parameter" unless $params{id};
+    croak "missing uuid parameter" unless $params{uuid};
+    croak "missing settings parameter" unless $params{settings};
+
+	my $policy_id = delete $params{id};
+    my $result = $self->_put("/policies/$policy_id", %params);
+
+    return $result;
+}
+
 sub create_scan {
     my ($self, %params) = @_;
 
