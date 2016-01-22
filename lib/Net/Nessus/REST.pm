@@ -61,67 +61,6 @@ sub get_policy_id {
     return $policy->{id};
 }
 
-#Bithex 
-sub import_policy {
-    my ($self, %params) = @_;
-
-    croak "missing file name parameter" unless $params{file};
-
-    my $result = $self->_post("/policies/import", %params);
-    return $result;
-}
-
-#Bithex 
-sub get_policy_details {
-    my ($self, %params) = @_;
-
-    croak "missing id parameter" unless $params{id};
-
-	my $policy_id = delete $params{id};
-
-    my $result = $self->_get("/policies/$policy_id");
-    return $result;
-}
-
-#Bithex 
-sub delete_policy {
-    my ($self, %params) = @_;
-
-    croak "missing Policy id parameter" unless $params{id};
-
-	my $policy_id = delete $params{id};
-    my $result = $self->_delete("/policies/$policy_id");
-
-    return $result;
-}
-
-#Bithex 
-sub configure_policy {
-    my ($self, %params) = @_;
-
-    croak "missing id parameter" unless $params{id};
-    croak "missing uuid parameter" unless $params{uuid};
-    croak "missing settings parameter" unless $params{settings};
-
-	my $policy_id = delete $params{id};
-    my $result = $self->_put("/policies/$policy_id", %params);
-
-    return $result;
-}
-
-#Bithex 
-sub create_policy {
-    my ($self, %params) = @_;
-
-    croak "missing uuid parameter" unless $params{uuid};
-    croak "missing settings parameter" unless $params{settings};
-
-	my $uuid = delete $params{uuid};
-    my $result = $self->_post("/policies", %params);
-
-    return $result;
-}
-
 sub create_scan {
     my ($self, %params) = @_;
 
@@ -415,18 +354,6 @@ sub get_scanner_id {
     return $scanner->{id};
 }
 
-#Bithex
-sub file_upload {
-    my ($self, %params) = @_;
-
-    croak "missing file name" unless $params{file};
-
-	my $file = delete $params{file};
-
-	my $result = $self->_post_file('/file/upload', $file);
-	return $result;
-}
-
 sub _get {
     my ($self, $path, %params) = @_;
 
@@ -475,31 +402,6 @@ sub _post {
         $self->{url} . $path,
         'Content-Type' => 'application/json',
         'Content'      => $content
-    );
-
-    my $result = eval { from_json($response->content()) };
-
-    if ($response->is_success()) {
-        return $result;
-    } else {
-        if ($result) {
-            croak "server error: " . $result->{error};
-        } else {
-            croak "communication error: " . $response->message()
-        }
-    }
-}
-
-#Bithex
-sub _post_file {
-    my ($self, $path, $file) = @_;
-
-    my $response = $self->{agent}->post(
-        $self->{url} . $path,
-        'Content-Type' => 'multipart/form-data',
-        'Content'      => [
-			Filedata => [$file]
-		]
     );
 
     my $result = eval { from_json($response->content()) };
