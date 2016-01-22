@@ -61,6 +61,15 @@ sub get_policy_id {
     return $policy->{id};
 }
 
+sub import_policy {
+    my ($self, %params) = @_;
+
+    croak "missing file name parameter" unless $params{id};
+
+    my $result = $self->_post("/policies/import", %params);
+    return $result;
+}
+
 sub create_scan {
     my ($self, %params) = @_;
 
@@ -540,10 +549,10 @@ Returns a reference to a hash with all settings and parameters for a given scan 
 
 See L<https://your.nessus.server:8834/api#/resources/policies/details> for details.
 
-=head2 $nessus->import_policy(file => $fileuploaded)
+=head2 $nessus->import_policy(id => $file_id)
 
 Returns reference to hash with name and identifier of the policy imported.
-NB $fileuploaded must be a valid identifier to a file uploaded to the Nessus server,
+NB $file_id must be a valid identifier to a file uploaded to the Nessus server,
 e.g. with method file_upload()
 
 Example:
