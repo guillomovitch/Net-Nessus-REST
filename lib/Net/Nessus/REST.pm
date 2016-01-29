@@ -81,6 +81,17 @@ sub get_policy_details {
     return $result;
 }
 
+sub delete_policy {
+    my ($self, %params) = @_;
+
+    croak "missing Policy id parameter" unless $params{id};
+
+	my $policy_id = delete $params{id};
+    my $result = $self->_delete("/policies/$policy_id");
+
+    return $result;
+}
+
 sub create_scan {
     my ($self, %params) = @_;
 
