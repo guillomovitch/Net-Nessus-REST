@@ -61,6 +61,15 @@ sub get_policy_id {
     return $policy->{id};
 }
 
+sub import_policy {
+    my ($self, %params) = @_;
+
+    croak "missing file name parameter" unless $params{id};
+
+    my $result = $self->_post("/policies/import", %params);
+    return $result;
+}
+
 sub create_scan {
     my ($self, %params) = @_;
 
