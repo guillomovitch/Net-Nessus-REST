@@ -118,7 +118,10 @@ sub configure_policy {
     return $result;
 }
 
+<<<<<<< a7cdc6950595480d6edbc50e516a4b55529c5a54
 <<<<<<< a697160bed5e888f002614264f375e3a3d50012b
+=======
+>>>>>>> Added method create_policy. Experimental. Needs more testing.
 # Experimental
 sub create_policy {
     my ($self, %params) = @_;
@@ -132,6 +135,7 @@ sub create_policy {
     return $result;
 }
 
+<<<<<<< a7cdc6950595480d6edbc50e516a4b55529c5a54
 =======
 >>>>>>> Added method import_policy(id => $file_id).
 =======
@@ -140,6 +144,8 @@ sub create_policy {
 >>>>>>> Added method delete_policy(id => $policy_id)
 =======
 >>>>>>> Added method configure_policy. Experimental. Needs more testing.
+=======
+>>>>>>> Added method create_policy. Experimental. Needs more testing.
 sub create_scan {
     my ($self, %params) = @_;
 
