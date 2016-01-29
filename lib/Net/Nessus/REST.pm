@@ -417,6 +417,30 @@ sub _post {
     }
 }
 
+sub _post_file {
+    my ($self, $path, $file) = @_;
+
+    my $response = $self->{agent}->post(
+        $self->{url} . $path,
+        'Content-Type' => 'multipart/form-data',
+        'Content'      => [
+			Filedata => [$file]
+		]
+    );
+
+    my $result = eval { from_json($response->content()) };
+
+    if ($response->is_success()) {
+        return $result;
+    } else {
+        if ($result) {
+            croak "server error: " . $result->{error};
+        } else {
+            croak "communication error: " . $response->message()
+        }
+    }
+}
+
 sub _put {
     my ($self, $path, %params) = @_;
 
