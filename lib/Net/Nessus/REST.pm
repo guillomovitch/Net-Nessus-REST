@@ -627,6 +627,30 @@ See L<https://your.nessus.server:8834/nessus6-api.html#/resources/policies/list>
 
 Returns the identifier for the policy with given name.
 
+=head2 $nessus->get_policy_details(id => $policy_id)
+
+Returns a reference to a hash with all settings and parameters for a given scan policy.
+
+See L<https://your.nessus.server:8834/api#/resources/policies/details> for details.
+
+=head2 $nessus->import_policy(id => $file_id)
+
+Returns reference to hash with name and identifier of the policy imported.
+NB $file_id must be a valid identifier to a file uploaded to the Nessus server,
+e.g. with method file_upload()
+
+Example:
+$result = $nessus->import_policy(file => $fileuploaded);
+print "Policy imported: " . $result->{'name'} . "\n";
+
+See L<https://your.nessus.server:8834/api#/resources/file/upload> for details.
+
+=head2 $nessus->delete_policy(id => $policy_id)
+
+Deletes a given scan policy off the Nessus server
+
+See L<https://your.nessus.server:8834/api#/resources/policies/delete> for details.
+
 =head2 $nessus->list_scanners()
 
 Returns the scanner list.
@@ -765,6 +789,17 @@ See L<https://your.nessus.server:8834/nessus6-api.html#/resources/plugins/family
 =head2 $nessus->get_scanner_id( name => $name )
 
 returns the identifier for the scanner with given name.
+
+=head2 $nessus->file_upload(file => $file)
+
+Uploads a file to the Nessus server.
+Returns a reference to hash with identifier to the uploaded file.
+
+Example:
+my $result = $nessus->file_upload(file => $file);
+my $fileuploaded = $result->{'fileuploaded'};
+
+See L<https://your.nessus.server:8834/api#/resources/file/upload> for details.
 
 =head1 LICENSE
 
