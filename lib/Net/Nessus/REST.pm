@@ -70,7 +70,10 @@ sub import_policy {
     return $result;
 }
 
+<<<<<<< f9b1fe5dfe525153b5ba0951fd5a5712ec9b2825
 <<<<<<< 679455a6f1920ba0c09204f7d240f6eeaf91f737
+=======
+>>>>>>> Added method get_policy_details(id => $policy_id)
 sub get_policy_details {
     my ($self, %params) = @_;
 
@@ -82,6 +85,7 @@ sub get_policy_details {
     return $result;
 }
 
+<<<<<<< f9b1fe5dfe525153b5ba0951fd5a5712ec9b2825
 sub delete_policy {
     my ($self, %params) = @_;
 
@@ -122,6 +126,8 @@ sub create_policy {
 
 =======
 >>>>>>> Added method import_policy(id => $file_id).
+=======
+>>>>>>> Added method get_policy_details(id => $policy_id)
 sub create_scan {
     my ($self, %params) = @_;
 
