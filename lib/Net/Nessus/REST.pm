@@ -106,6 +106,19 @@ sub configure_policy {
     return $result;
 }
 
+# Experimental
+sub create_policy {
+    my ($self, %params) = @_;
+
+    croak "missing uuid parameter" unless $params{uuid};
+    croak "missing settings parameter" unless $params{settings};
+
+	my $uuid = delete $params{uuid};
+    my $result = $self->_post("/policies", %params);
+
+    return $result;
+}
+
 sub create_scan {
     my ($self, %params) = @_;
 
