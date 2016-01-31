@@ -1,5 +1,11 @@
 Revision history for Net::Nessus::REST
 
+0.5 Sun, 31 Jan 2016
+* add multiple policy management methods (Asgeir Aegisson)
+* change list_plugin_families return value, for consistency (Asgeir Aegisson)
+* additional documentation fixes (Asgeir Aegisson)
+* use versioned dependency on LWP::UserAgent for delete() method usage
+
 0.4 Sun, 12 Jul 2015
 * fix breakage in download_scan() method,
   introduced by my fault in previous release
