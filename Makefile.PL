@@ -7,7 +7,7 @@ WriteMakefile(
     LICENSE        => 'GPL_3',
     PREREQ_PM => {
         'JSON'           => 0,
-        'LWP::UserAgent' => 0,
+        'LWP::UserAgent' => 6.04,
     },
     TEST_REQUIRES  => {
         'Test::More' => 0,
