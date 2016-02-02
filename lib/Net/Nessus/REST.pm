@@ -70,6 +70,7 @@ sub import_policy {
     return $result;
 }
 
+<<<<<<< 679455a6f1920ba0c09204f7d240f6eeaf91f737
 sub get_policy_details {
     my ($self, %params) = @_;
 
@@ -119,6 +120,8 @@ sub create_policy {
     return $result;
 }
 
+=======
+>>>>>>> Added method import_policy(id => $file_id).
 sub create_scan {
     my ($self, %params) = @_;
 
