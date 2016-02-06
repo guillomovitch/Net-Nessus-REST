@@ -651,6 +651,14 @@ Deletes a given scan policy off the Nessus server
 
 See L<https://your.nessus.server:8834/api#/resources/policies/delete> for details.
 
+=head2 $nessus->configure_policy(id => $policy_id, uuid => $uuid, settings => $settings)
+
+See L<https://your.nessus.server:8834/api#/resources/policies/configure> for details.
+
+=head2 $nessus->create_policy(uuid => $uuid, settings => $settings)
+
+See L<https://your.nessus.server:8834/api#/resources/policies/create> for details.
+
 =head2 $nessus->list_scanners()
 
 Returns the scanner list.
