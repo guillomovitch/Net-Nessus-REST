@@ -1,5 +1,9 @@
 Revision history for Net::Nessus::REST
 
+0.5.1 Sat, 06 Feb 2016
+- fix import_policy() method (Asgeir Aegisson)
+- keep pod and kwalitee tests for author only (fix #111699)
+
 0.5 Sun, 31 Jan 2016
 * add multiple policy management methods (Asgeir Aegisson)
 * change list_plugin_families return value, for consistency (Asgeir Aegisson)
