@@ -1,5 +1,8 @@
 Revision history for Net::Nessus::REST
 
+0.5.2 Sat, 26 Feb 2016
+- fix retrieval of scan history (Denis Joiret)
+
 0.5.1 Sat, 06 Feb 2016
 - fix import_policy() method (Asgeir Aegisson)
 - keep pod and kwalitee tests for author only (fix #111699)
