@@ -219,9 +219,11 @@ sub export_scan {
                                             $params{format} eq 'csv'    or
                                             $params{format} eq 'db';
 
-    my $scan_id = delete $params{scan_id};
+    my $scan_id    = delete $params{scan_id};
+    my $history_id = delete $params{history_id};
 
-    my $result = $self->_post("/scans/$scan_id/export", %params);
+    my $history_param = defined $history_id ? "?history_id=$history_id" : "";
+    my $result = $self->_post("/scans/$scan_id/export$history_param", %params);
     return $result->{file};
 }
 
