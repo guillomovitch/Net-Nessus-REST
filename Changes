@@ -1,5 +1,11 @@
 Revision history for Net::Nessus::REST
 
+0.6 Tue, 08 Mar 2016
+- first actual tests against a live Nessus server
+- fix get_scan_details() method (Denis Joiret)
+- correctly fix list_scanners() method (Todd Bruner)
+- add stop_scan() method (Todd Bruner)
+
 0.5.2 Sat, 26 Feb 2016
 - fix retrieval of scan history (Denis Joiret)
 
