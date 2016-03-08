@@ -194,6 +194,16 @@ sub get_scan_details {
     return $result;
 }
 
+sub stop_scan {
+    my ($self, %params) = @_;
+
+    croak "missing scan_id parameter" unless $params{scan_id};
+
+    my $scan_id = delete $params{scan_id};
+    my $result  = $self->_get("/scans/$scan_id/stop", %params);
+    return $result;
+}
+
 sub set_scan_read_status {
     my ($self, %params) = @_;
 
@@ -813,6 +823,12 @@ my $result = $nessus->file_upload(file => $file);
 my $fileuploaded = $result->{'fileuploaded'};
 
 See L<https://your.nessus.server:8834/api#/resources/file/upload> for details.
+
+=head2 $nessus->stop_scan(scan_id => $scan_id )
+
+Returns details for the given scan.
+
+See L<https://your.nessus.server:8834/nessus6-api.html#/resources/scans/stop> for details.
 
 =head1 LICENSE
 
