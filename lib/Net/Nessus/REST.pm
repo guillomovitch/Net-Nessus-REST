@@ -200,7 +200,7 @@ sub stop_scan {
     croak "missing scan_id parameter" unless $params{scan_id};
 
     my $scan_id = delete $params{scan_id};
-    my $result  = $self->_get("/scans/$scan_id/stop", %params);
+    my $result  = $self->_post("/scans/$scan_id/stop", %params);
     return $result;
 }
 
