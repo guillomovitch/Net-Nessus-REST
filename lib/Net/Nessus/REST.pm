@@ -355,7 +355,7 @@ sub list_scanners {
     my ($self) = @_;
 
     my $result = $self->_get("/scanners");
-    return $result->{scanner} ? @{$result->{scanner}} : ();
+    return $result->{scanners} ? @{$result->{scanners}} : ();
 }
 
 sub list_folders {
