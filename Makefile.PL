@@ -9,6 +9,9 @@ WriteMakefile(
         'JSON'           => 0,
         'LWP::UserAgent' => 6.04,
     },
+    CONFIGURE_REQUIRES => {
+        'version' => 0,
+    },
     TEST_REQUIRES  => {
         'IO::Socket::SSL' => 0,
         'List::MoreUtils' => 0,
