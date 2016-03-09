@@ -10,7 +10,9 @@ WriteMakefile(
         'LWP::UserAgent' => 6.04,
     },
     TEST_REQUIRES  => {
-        'Test::More' => 0,
+        'Test::More'      => 0,
+        'List::MoreUtils' => 0,
+        'IO::Socket::SSL' => 0,
     },
     META_MERGE => {
         'meta-spec' => { version => 2 },
