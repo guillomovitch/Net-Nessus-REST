@@ -1,5 +1,8 @@
 Revision history for Net::Nessus::REST
 
+0.7.0 Thu, 10 Mar 2016
+- yet another attempt to fix version number
+
 0.6.1 Wed, 09 Mar 2016
 - fix test dependencies
 - fix usage of dotted-decimal version scheme
