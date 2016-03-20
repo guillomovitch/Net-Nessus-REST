@@ -8,7 +8,7 @@ use LWP::UserAgent;
 use JSON;
 use List::Util qw(first);
 
-use version; our $VERSION = version->declare('v0.7.0');
+use version; our $VERSION = version->declare('v0.700.1');
 
 sub new {
     my ($class, %params) = @_;
