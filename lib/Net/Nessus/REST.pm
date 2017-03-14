@@ -70,6 +70,10 @@ sub import_policy {
     return $result;
 }
 
+<<<<<<< f9b1fe5dfe525153b5ba0951fd5a5712ec9b2825
+<<<<<<< 679455a6f1920ba0c09204f7d240f6eeaf91f737
+=======
+>>>>>>> Added method get_policy_details(id => $policy_id)
 sub get_policy_details {
     my ($self, %params) = @_;
 
@@ -81,6 +85,10 @@ sub get_policy_details {
     return $result;
 }
 
+<<<<<<< a071b333f11a343d3b52768226af53be653923b9
+<<<<<<< f9b1fe5dfe525153b5ba0951fd5a5712ec9b2825
+=======
+>>>>>>> Added method delete_policy(id => $policy_id)
 sub delete_policy {
     my ($self, %params) = @_;
 
@@ -92,6 +100,10 @@ sub delete_policy {
     return $result;
 }
 
+<<<<<<< a697160bed5e888f002614264f375e3a3d50012b
+<<<<<<< a071b333f11a343d3b52768226af53be653923b9
+=======
+>>>>>>> Added method configure_policy. Experimental. Needs more testing.
 # Experimental
 sub configure_policy {
     my ($self, %params) = @_;
@@ -106,6 +118,10 @@ sub configure_policy {
     return $result;
 }
 
+<<<<<<< a7cdc6950595480d6edbc50e516a4b55529c5a54
+<<<<<<< a697160bed5e888f002614264f375e3a3d50012b
+=======
+>>>>>>> Added method create_policy. Experimental. Needs more testing.
 # Experimental
 sub create_policy {
     my ($self, %params) = @_;
@@ -119,6 +135,17 @@ sub create_policy {
     return $result;
 }
 
+<<<<<<< a7cdc6950595480d6edbc50e516a4b55529c5a54
+=======
+>>>>>>> Added method import_policy(id => $file_id).
+=======
+>>>>>>> Added method get_policy_details(id => $policy_id)
+=======
+>>>>>>> Added method delete_policy(id => $policy_id)
+=======
+>>>>>>> Added method configure_policy. Experimental. Needs more testing.
+=======
+>>>>>>> Added method create_policy. Experimental. Needs more testing.
 sub create_scan {
     my ($self, %params) = @_;
 
@@ -390,7 +417,7 @@ sub list_plugin_families {
     my ($self) = @_;
 
     my $result  = $self->_get("/plugins/families");
-    return $result->{families} ? @{$result->{families}} : ();
+    return $result;
 }
 
 sub get_plugin_family_details {
@@ -483,6 +510,30 @@ sub _post {
         $self->{url} . $path,
         'Content-Type' => 'application/json',
         'Content'      => $content
+    );
+
+    my $result = eval { from_json($response->content()) };
+
+    if ($response->is_success()) {
+        return $result;
+    } else {
+        if ($result) {
+            croak "server error: " . $result->{error};
+        } else {
+            croak "communication error: " . $response->message()
+        }
+    }
+}
+
+sub _post_file {
+    my ($self, $path, $file) = @_;
+
+    my $response = $self->{agent}->post(
+        $self->{url} . $path,
+        'Content-Type' => 'multipart/form-data',
+        'Content'      => [
+			Filedata => [$file]
+		]
     );
 
     my $result = eval { from_json($response->content()) };
